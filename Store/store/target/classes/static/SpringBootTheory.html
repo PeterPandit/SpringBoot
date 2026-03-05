@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot – Theory &amp; Concepts for Beginners</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6db33f, #3a7a0d);
+            color: #fff;
+            padding: 40px 20px 30px;
+            text-align: center;
+        }
+        header h1 { font-size: 2.4rem; margin-bottom: 8px; }
+        header p  { font-size: 1.05rem; opacity: 0.9; }
+
+        nav {
+            background: #2e5e12;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            padding: 10px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav a {
+            color: #d4f0b8;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.88rem;
+            transition: background 0.2s;
+        }
+        nav a:hover { background: #4a9a1c; color: #fff; }
+
+        main {
+            max-width: 960px;
+            margin: 36px auto;
+            padding: 0 20px 60px;
+        }
+
+        section {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 32px;
+            padding: 32px 36px;
+        }
+
+        h2 {
+            color: #3a7a0d;
+            font-size: 1.55rem;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #6db33f;
+        }
+
+        h3 {
+            color: #2e5e12;
+            font-size: 1.15rem;
+            margin: 20px 0 8px;
+        }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol {
+            padding-left: 24px;
+            margin-bottom: 12px;
+        }
+        li { margin-bottom: 6px; }
+
+        .highlight-box {
+            background: #f0f8e8;
+            border-left: 5px solid #6db33f;
+            padding: 14px 18px;
+            border-radius: 0 6px 6px 0;
+            margin: 16px 0;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .layer-card {
+            border: 2px solid #c5e5a0;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            background: #f9fdf4;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .layer-card:hover { transform: translateY(-3px); box-shadow: 0 6px 14px rgba(0,0,0,0.1); }
+        .layer-card .icon { font-size: 2rem; margin-bottom: 6px; }
+        .layer-card strong { display: block; color: #2e5e12; margin-bottom: 4px; }
+
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .use-case-card {
+            background: linear-gradient(135deg, #f9fdf4, #eaf5d8);
+            border: 1px solid #c5e5a0;
+            border-radius: 8px;
+            padding: 18px;
+        }
+        .use-case-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
+        .use-case-card h4 { color: #2e5e12; margin-bottom: 6px; }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 16px;
+        }
+        @media (max-width: 600px) { .pros-cons { grid-template-columns: 1fr; } }
+
+        .pros, .cons {
+            border-radius: 6px;
+            padding: 16px 20px;
+        }
+        .pros { background: #f0f8e8; border: 1px solid #6db33f; }
+        .cons { background: #fff8e1; border: 1px solid #f5c518; }
+        .pros h4 { color: #2e5e12; }
+        .cons h4 { color: #8a6800; }
+
+        code {
+            background: #f0f4e8;
+            border: 1px solid #c5e5a0;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.88rem;
+            color: #2e5e12;
+        }
+
+        pre {
+            background: #1e2d10;
+            color: #d4f0b8;
+            border-radius: 6px;
+            padding: 18px 20px;
+            overflow-x: auto;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin: 12px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #6db33f;
+            color: #fff;
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            margin: 2px 3px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+        }
+        th {
+            background: #6db33f;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e0ecd4;
+        }
+        tr:nth-child(even) td { background: #f9fdf4; }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: #6db33f;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .back-link:hover { background: #3a7a0d; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🍃 Spring Boot – Theory &amp; Core Concepts</h1>
+    <p>A comprehensive beginner's guide to understanding Spring Boot</p>
+</header>
+
+<nav>
+    <a href="#what-is">What Is It?</a>
+    <a href="#why-use">Why Use It?</a>
+    <a href="#how-works">How It Works</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#key-concepts">Key Concepts</a>
+    <a href="#use-cases">Use Cases</a>
+    <a href="#vs-spring">vs Spring MVC</a>
+    <a href="#starter-tips">Starter Tips</a>
+    <a href="#ecosystem">Ecosystem</a>
+</nav>
+
+<main>
+
+    <!-- ============================================================ -->
+    <!-- 1. WHAT IS SPRING BOOT -->
+    <!-- ============================================================ -->
+    <section id="what-is">
+        <h2>1. What Is Spring Boot?</h2>
+        <p>
+            <strong>Spring Boot</strong> is an open-source, opinionated framework built on top of the
+            <strong>Spring Framework</strong> that drastically simplifies the process of creating
+            production-ready, stand-alone Java applications. It was created by
+            <strong>Pivotal Team</strong> and was first released in 2014.
+        </p>
+
+        <div class="highlight-box">
+            <strong>One-sentence definition:</strong><br>
+            Spring Boot lets you build powerful Java web applications with <em>minimal configuration</em>
+            by providing sensible defaults, an embedded server, and auto-configuration.
+        </div>
+
+        <h3>Before Spring Boot vs After Spring Boot</h3>
+        <table>
+            <tr>
+                <th>Traditional Spring</th>
+                <th>Spring Boot</th>
+            </tr>
+            <tr>
+                <td>Lengthy XML or Java config files required</td>
+                <td>Auto-configuration – almost zero boilerplate config</td>
+            </tr>
+            <tr>
+                <td>WAR file deployed to an external server (Tomcat, JBoss)</td>
+                <td>Embedded Tomcat/Jetty/Undertow – runs as a plain JAR</td>
+            </tr>
+            <tr>
+                <td>Dependency versions must be manually managed</td>
+                <td>Starter POMs manage compatible dependency sets for you</td>
+            </tr>
+            <tr>
+                <td>Requires extensive setup to get a running application</td>
+                <td>Production-ready app in minutes with <code>spring.io/start</code></td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. WHY USE SPRING BOOT -->
+    <!-- ============================================================ -->
+    <section id="why-use">
+        <h2>2. Why Use Spring Boot?</h2>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>✅ Advantages</h4>
+                <ul>
+                    <li><strong>Rapid development</strong> – start a REST API in minutes</li>
+                    <li><strong>Auto-configuration</strong> – Spring detects libraries on the classpath and configures them</li>
+                    <li><strong>Embedded server</strong> – no need to install and configure Tomcat separately</li>
+                    <li><strong>Opinionated defaults</strong> – sensible defaults let you focus on business logic</li>
+                    <li><strong>Production-ready</strong> – Actuator provides health checks, metrics &amp; monitoring out-of-the-box</li>
+                    <li><strong>Massive ecosystem</strong> – integrates with databases, security, messaging, cloud, and more</li>
+                    <li><strong>Microservices friendly</strong> – pairs perfectly with Spring Cloud for distributed systems</li>
+                    <li><strong>Large community</strong> – extensive documentation, Stack Overflow support, and tutorials</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4>⚠️ Considerations</h4>
+                <ul>
+                    <li>Auto-configuration can be <em>too magical</em> for beginners to debug</li>
+                    <li>Large classpath footprint compared to micro-frameworks like Micronaut or Quarkus</li>
+                    <li>Startup time is slower than GraalVM native images (though Spring Native addresses this)</li>
+                    <li>Heavy abstraction can hide what is happening under the hood</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. HOW SPRING BOOT WORKS -->
+    <!-- ============================================================ -->
+    <section id="how-works">
+        <h2>3. How Spring Boot Works</h2>
+
+        <h3>🚀 The Application Startup Lifecycle</h3>
+        <ol>
+            <li>
+                <strong>Entry Point – <code>main()</code> method</strong><br>
+                Every Spring Boot application starts with a standard Java <code>main()</code> method that
+                calls <code>SpringApplication.run()</code>.
+            </li>
+            <li>
+                <strong><code>@SpringBootApplication</code> annotation</strong><br>
+                This single annotation is a shortcut for three annotations:
+                <ul>
+                    <li><code>@Configuration</code> – marks the class as a source of bean definitions</li>
+                    <li><code>@EnableAutoConfiguration</code> – tells Spring Boot to auto-configure based on classpath</li>
+                    <li><code>@ComponentScan</code> – scans for Spring components (Controllers, Services, etc.) in the package</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Auto-Configuration</strong><br>
+                Spring Boot reads <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>
+                (or <code>spring.factories</code> in older versions) and conditionally applies configuration classes
+                based on what is on the classpath. For example, if <code>spring-boot-starter-web</code> is present,
+                an embedded Tomcat server and Spring MVC are configured automatically.
+            </li>
+            <li>
+                <strong>IoC Container (ApplicationContext) Creation</strong><br>
+                Spring creates the <strong>Application Context</strong> – a registry of all beans (objects managed by Spring).
+                Dependency Injection (DI) is performed, wiring beans together.
+            </li>
+            <li>
+                <strong>Embedded Server Startup</strong><br>
+                For web applications, the embedded Tomcat (or Jetty/Undertow) starts on port <code>8080</code>
+                by default and begins accepting HTTP requests.
+            </li>
+            <li>
+                <strong>Request Handling (DispatcherServlet)</strong><br>
+                Incoming HTTP requests are routed through the <code>DispatcherServlet</code> which maps
+                requests to the appropriate <code>@Controller</code> or <code>@RestController</code> methods.
+            </li>
+        </ol>
+
+        <div class="highlight-box">
+            <strong>Simple Boot Flow:</strong><br>
+            <code>main() → SpringApplication.run() → ApplicationContext → Embedded Tomcat → DispatcherServlet → Your Controller</code>
+        </div>
+
+        <h3>🔑 The Magic of Auto-Configuration</h3>
+        <p>
+            Auto-configuration uses <strong>conditional annotations</strong> such as
+            <code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>, and
+            <code>@ConditionalOnProperty</code> to decide whether to apply a configuration.
+            This means Spring Boot will configure a DataSource only if a database driver exists on the classpath —
+            you never have to write this boilerplate yourself.
+        </p>
+
+        <pre>
+// This is all you need to bootstrap a Spring Boot web application:
+@SpringBootApplication
+public class MyApp {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApp.class, args);
+    }
+}
+
+// And a simple REST endpoint:
+@RestController
+public class HelloController {
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, Spring Boot!";
+    }
+}</pre>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. ARCHITECTURE -->
+    <!-- ============================================================ -->
+    <section id="architecture">
+        <h2>4. Architecture of Spring Boot</h2>
+
+        <p>Spring Boot follows a <strong>layered (n-tier) architecture</strong>, keeping concerns separated
+        and code organised. A typical Spring Boot web application has four main layers:</p>
+
+        <div class="architecture-grid">
+            <div class="layer-card">
+                <div class="icon">🌐</div>
+                <strong>Presentation Layer</strong>
+                <p>Controllers (<code>@Controller</code>, <code>@RestController</code>).
+                   Handles HTTP requests/responses. Contains no business logic.</p>
+            </div>
+            <div class="layer-card">
+                <div class="icon">⚙️</div>
+                <strong>Business / Service Layer</strong>
+                <p>Services (<code>@Service</code>).
+                   Contains business rules and coordinates multiple repositories.</p>
+            </div>
+            <div class="layer-card">
+                <div class="icon">🗄️</div>
+                <strong>Persistence / Repository Layer</strong>
+                <p>Repositories (<code>@Repository</code>).
+                   Talks to the database via JPA, JDBC, or other data-access mechanisms.</p>
+            </div>
+            <div class="layer-card">
+                <div class="icon">💾</div>
+                <strong>Database Layer</strong>
+                <p>The actual database (MySQL, PostgreSQL, MongoDB, H2, etc.).
+                   Spring Boot configures the connection pool automatically.</p>
+            </div>
+        </div>
+
+        <h3>Core Internal Components</h3>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Role</th>
+            </tr>
+            <tr>
+                <td><strong>Spring Core / IoC Container</strong></td>
+                <td>Manages object creation and Dependency Injection (DI) via ApplicationContext</td>
+            </tr>
+            <tr>
+                <td><strong>Spring MVC / WebFlux</strong></td>
+                <td>Handles web request routing via DispatcherServlet (MVC) or reactive pipeline (WebFlux)</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Data JPA</strong></td>
+                <td>Simplifies database operations; repositories auto-generate common queries</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Security</strong></td>
+                <td>Authentication and authorisation; protects endpoints with minimal configuration</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Boot Actuator</strong></td>
+                <td>Exposes production-ready endpoints: /health, /metrics, /info, /env</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Boot Auto-Config</strong></td>
+                <td>Reads classpath and conditionally configures beans so you don't have to</td>
+            </tr>
+            <tr>
+                <td><strong>Embedded Server</strong></td>
+                <td>Tomcat, Jetty, or Undertow packaged inside the JAR – no external server needed</td>
+            </tr>
+        </table>
+
+        <h3>How Layers Communicate</h3>
+        <div class="highlight-box">
+            HTTP Request → <strong>Controller</strong> → calls → <strong>Service</strong> → calls → <strong>Repository</strong> → reads/writes → <strong>Database</strong><br>
+            HTTP Response ← Controller ← Service ← Repository (reversed)
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. KEY CONCEPTS -->
+    <!-- ============================================================ -->
+    <section id="key-concepts">
+        <h2>5. Key Concepts Every Beginner Must Know</h2>
+
+        <h3>🔸 Dependency Injection (DI) &amp; Inversion of Control (IoC)</h3>
+        <p>
+            Instead of creating objects yourself with <code>new</code>, you declare them as beans and Spring's
+            IoC container creates and injects them. This decouples your classes and makes them easier to test.
+        </p>
+        <pre>
+@Service
+public class OrderService {
+    private final ProductRepository productRepo; // injected automatically
+
+    public OrderService(ProductRepository productRepo) {
+        this.productRepo = productRepo;          // constructor injection (recommended)
+    }
+}</pre>
+
+        <h3>🔸 Beans</h3>
+        <p>
+            A <strong>bean</strong> is any Java object managed by the Spring IoC container. You declare beans
+            with annotations: <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>,
+            <code>@Controller</code>, or <code>@Bean</code> inside a <code>@Configuration</code> class.
+        </p>
+
+        <h3>🔸 application.properties / application.yml</h3>
+        <p>
+            Centralised configuration file where you customise almost every aspect of Spring Boot
+            (server port, database URL, logging level, etc.) without changing Java code.
+        </p>
+        <pre>
+# application.properties example
+server.port=8081
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=secret
+spring.jpa.hibernate.ddl-auto=update
+logging.level.com.example=DEBUG</pre>
+
+        <h3>🔸 Starter Dependencies</h3>
+        <p>
+            Spring Boot provides <em>starter POMs</em> that bundle related libraries together.
+            You add one dependency and you get all its transitive dependencies at compatible versions:
+        </p>
+        <ul>
+            <li><code>spring-boot-starter-web</code> – Spring MVC + embedded Tomcat + Jackson (JSON)</li>
+            <li><code>spring-boot-starter-data-jpa</code> – Hibernate + Spring Data JPA</li>
+            <li><code>spring-boot-starter-security</code> – Spring Security</li>
+            <li><code>spring-boot-starter-test</code> – JUnit 5, Mockito, AssertJ</li>
+            <li><code>spring-boot-starter-actuator</code> – Production monitoring endpoints</li>
+            <li><code>spring-boot-starter-thymeleaf</code> – Thymeleaf template engine</li>
+        </ul>
+
+        <h3>🔸 REST Controllers</h3>
+        <p>
+            <code>@RestController</code> = <code>@Controller</code> + <code>@ResponseBody</code>.
+            Methods return data (usually JSON) directly rather than view names.
+        </p>
+        <pre>
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable Long id) { ... }
+
+    @PostMapping
+    public Product create(@RequestBody Product product) { ... }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) { ... }
+}</pre>
+
+        <h3>🔸 Profiles</h3>
+        <p>
+            Spring profiles let you maintain separate configurations for different environments
+            (<code>dev</code>, <code>test</code>, <code>prod</code>). Use
+            <code>application-dev.properties</code> or activate with
+            <code>spring.profiles.active=dev</code>.
+        </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. USE CASES / WHO USES SPRING BOOT -->
+    <!-- ============================================================ -->
+    <section id="use-cases">
+        <h2>6. What Kinds of Applications Use Spring Boot?</h2>
+
+        <div class="use-case-grid">
+            <div class="use-case-card">
+                <div class="icon">🔌</div>
+                <h4>RESTful / Web APIs</h4>
+                <p>The most common use case. Build JSON/XML APIs consumed by mobile apps, front-ends, or other services.</p>
+            </div>
+            <div class="use-case-card">
+                <div class="icon">🧩</div>
+                <h4>Microservices</h4>
+                <p>Each service is a small independent Spring Boot app. Used with Spring Cloud, Eureka, and API gateways.</p>
+            </div>
+            <div class="use-case-card">
+                <div class="icon">🖥️</div>
+                <h4>Full-Stack Web Applications</h4>
+                <p>Backend paired with Thymeleaf, FreeMarker, or a JS frontend (React, Angular, Vue) via REST.</p>
+            </div>
+            <div class="use-case-card">
+                <div class="icon">⚡</div>
+                <h4>Batch Processing</h4>
+                <p>Large-scale data processing jobs using Spring Batch (reading files, transforming data, writing to DBs).</p>
+            </div>
+            <div class="use-case-card">
+                <div class="icon">📨</div>
+                <h4>Event-Driven Applications</h4>
+                <p>Message consumers and producers using Kafka, RabbitMQ, or ActiveMQ with Spring Integration.</p>
+            </div>
+            <div class="use-case-card">
+                <div class="icon">🔒</div>
+                <h4>Secure Enterprise Applications</h4>
+                <p>Banking, healthcare, and e-commerce backends where Spring Security provides robust auth (OAuth2, JWT).</p>
+            </div>
+            <div class="use-case-card">
+                <div class="icon">☁️</div>
+                <h4>Cloud-Native Applications</h4>
+                <p>Deploys easily to AWS, Azure, GCP or Kubernetes. Spring Cloud provides service discovery, config server, circuit breakers, etc.</p>
+            </div>
+            <div class="use-case-card">
+                <div class="icon">📊</div>
+                <h4>Data Processing &amp; Analytics</h4>
+                <p>Applications that aggregate, transform and expose data from multiple databases or data warehouses.</p>
+            </div>
+        </div>
+
+        <h3>Real-World Companies Using Spring Boot</h3>
+        <p>
+            <span class="badge">Netflix</span>
+            <span class="badge">Amazon</span>
+            <span class="badge">Google</span>
+            <span class="badge">Microsoft</span>
+            <span class="badge">Intuit</span>
+            <span class="badge">Alibaba</span>
+            <span class="badge">LinkedIn</span>
+            <span class="badge">Booking.com</span>
+            <span class="badge">eBay</span>
+            <span class="badge">Ticketmaster</span>
+            <span class="badge">Capital One</span>
+            <span class="badge">Samsung</span>
+        </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. SPRING BOOT vs SPRING MVC -->
+    <!-- ============================================================ -->
+    <section id="vs-spring">
+        <h2>7. Spring Boot vs Traditional Spring MVC</h2>
+
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>Spring MVC (Traditional)</th>
+                <th>Spring Boot</th>
+            </tr>
+            <tr>
+                <td>Configuration</td>
+                <td>XML or extensive Java config required</td>
+                <td>Auto-configured with sensible defaults</td>
+            </tr>
+            <tr>
+                <td>Server setup</td>
+                <td>Deploy WAR to external Tomcat</td>
+                <td>Embedded server, run as JAR with <code>java -jar</code></td>
+            </tr>
+            <tr>
+                <td>Dependency management</td>
+                <td>Manual – you manage all versions</td>
+                <td>Starter POMs manage compatible versions</td>
+            </tr>
+            <tr>
+                <td>Application startup</td>
+                <td>Complex project structure needed</td>
+                <td>One class + <code>main()</code> method is enough</td>
+            </tr>
+            <tr>
+                <td>Production monitoring</td>
+                <td>Custom implementation required</td>
+                <td>Built-in Actuator endpoints</td>
+            </tr>
+            <tr>
+                <td>Learning curve</td>
+                <td>Steeper</td>
+                <td>Gentler for beginners</td>
+            </tr>
+        </table>
+
+        <div class="highlight-box">
+            <strong>Important:</strong> Spring Boot does <em>not</em> replace Spring MVC — it
+            <em>builds on top of it</em> and removes all the manual wiring needed to use it.
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8. STARTER TIPS FOR BEGINNERS -->
+    <!-- ============================================================ -->
+    <section id="starter-tips">
+        <h2>8. Starter Tips for Beginners</h2>
+
+        <h3>📌 Step 1 – Generate your project</h3>
+        <p>Use <a href="https://start.spring.io" target="_blank" rel="noopener">start.spring.io</a>
+           to generate a new project. Select your dependencies (e.g., <em>Web, JPA, H2</em>) and download the ZIP.</p>
+
+        <h3>📌 Step 2 – Understand the project structure</h3>
+        <pre>
+src/
+├── main/
+│   ├── java/com/example/myapp/
+│   │   ├── MyAppApplication.java    ← Entry point
+│   │   ├── controller/              ← HTTP handlers
+│   │   ├── service/                 ← Business logic
+│   │   ├── repository/              ← Data access
+│   │   └── model/                   ← Domain entities
+│   └── resources/
+│       ├── application.properties   ← Configuration
+│       └── static/                  ← Static HTML/CSS/JS
+└── test/
+    └── java/com/example/myapp/      ← Unit &amp; integration tests</pre>
+
+        <h3>📌 Step 3 – Key annotations to learn first</h3>
+        <table>
+            <tr>
+                <th>Annotation</th>
+                <th>Purpose</th>
+            </tr>
+            <tr><td><code>@SpringBootApplication</code></td><td>Marks the main application class</td></tr>
+            <tr><td><code>@RestController</code></td><td>Marks a class as a REST API controller</td></tr>
+            <tr><td><code>@GetMapping</code> / <code>@PostMapping</code></td><td>Maps HTTP GET/POST requests to methods</td></tr>
+            <tr><td><code>@Service</code></td><td>Marks a class as a service (business logic)</td></tr>
+            <tr><td><code>@Repository</code></td><td>Marks a class as a data-access component</td></tr>
+            <tr><td><code>@Entity</code></td><td>Maps a Java class to a database table</td></tr>
+            <tr><td><code>@Autowired</code></td><td>Injects a dependency (constructor injection is preferred)</td></tr>
+            <tr><td><code>@Value</code></td><td>Injects a property value from <code>application.properties</code></td></tr>
+            <tr><td><code>@Component</code></td><td>Generic Spring-managed component</td></tr>
+            <tr><td><code>@Configuration</code></td><td>Class that declares <code>@Bean</code> methods</td></tr>
+        </table>
+
+        <h3>📌 Step 4 – Run the application</h3>
+        <pre>
+# Using Maven Wrapper (no Maven installation needed)
+./mvnw spring-boot:run
+
+# Or build a fat JAR and run it
+./mvnw package
+java -jar target/myapp-0.0.1-SNAPSHOT.jar
+
+# Visit http://localhost:8080 in your browser</pre>
+
+        <h3>📌 Step 5 – Suggested learning path</h3>
+        <ol>
+            <li>Build a Hello World REST endpoint</li>
+            <li>Connect to an in-memory H2 database using Spring Data JPA</li>
+            <li>Create a full CRUD REST API (Create, Read, Update, Delete)</li>
+            <li>Add input validation with <code>spring-boot-starter-validation</code></li>
+            <li>Secure endpoints with Spring Security (Basic Auth → JWT)</li>
+            <li>Write unit tests with JUnit 5 and Mockito</li>
+            <li>Explore Spring Boot Actuator for monitoring</li>
+            <li>Dockerise your application</li>
+            <li>Deploy to a cloud platform (AWS, Heroku, Render)</li>
+        </ol>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 9. ECOSYSTEM -->
+    <!-- ============================================================ -->
+    <section id="ecosystem">
+        <h2>9. The Spring Ecosystem</h2>
+        <p>Spring Boot is the entry point into a rich ecosystem of Spring projects:</p>
+
+        <table>
+            <tr>
+                <th>Project</th>
+                <th>What It Does</th>
+            </tr>
+            <tr>
+                <td><strong>Spring Framework</strong></td>
+                <td>The foundational library providing IoC, DI, AOP, transactions</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Boot</strong></td>
+                <td>Opinionated setup, auto-config, embedded server, starters</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Data</strong></td>
+                <td>Unified data access across JPA, MongoDB, Redis, Cassandra, etc.</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Security</strong></td>
+                <td>Authentication, authorisation, OAuth2, JWT, CSRF protection</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Cloud</strong></td>
+                <td>Microservices patterns: service discovery, config server, circuit breakers</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Batch</strong></td>
+                <td>Batch processing: chunked reads/writes, job scheduling, retry</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Integration</strong></td>
+                <td>Enterprise messaging patterns, Kafka, RabbitMQ integration</td>
+            </tr>
+            <tr>
+                <td><strong>Spring WebFlux</strong></td>
+                <td>Reactive, non-blocking web applications for high concurrency</td>
+            </tr>
+            <tr>
+                <td><strong>Spring Native</strong></td>
+                <td>Compile Spring apps to GraalVM native images for instant startup</td>
+            </tr>
+        </table>
+
+        <div class="highlight-box">
+            <strong>💡 Beginner Tip:</strong> Start with <strong>Spring Boot + Spring MVC + Spring Data JPA</strong>.
+            Once comfortable, explore Spring Security, and then Spring Cloud for microservices.
+        </div>
+    </section>
+
+    <a class="back-link" href="/">← Back to Home</a>
+
+</main>
+
+<footer>
+    <p>Spring Boot Theory Guide · Part of the Spring Boot Learning Project</p>
+</footer>
+
+</body>
+</html>
